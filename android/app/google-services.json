@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682831271155",
+    "project_id": "loaclfix",
+    "storage_bucket": "loaclfix.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682831271155:android:d8c9d1f746bd162498d386",
+        "android_client_info": {
+          "package_name": "com.example.localfix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdDkcOBkRYrJ8DGmL4bzb8fryMOgdUCgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
