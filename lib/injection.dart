@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:localfix/data/Auth/datasource/auth_datasource.dart';
-import 'package:localfix/data/Auth/repositories/auth_repo_implement.dart';
-import 'package:localfix/domain/Auth/repositoires/auth_repositories.dart';
-import 'package:localfix/domain/Auth/usecases/changepassword_usecase.dart';
-import 'package:localfix/domain/Auth/usecases/getcurrentuser_usecase.dart';
-import 'package:localfix/domain/Auth/usecases/isloggedin_usecase.dart';
-import 'package:localfix/domain/Auth/usecases/login_usecase.dart';
-import 'package:localfix/domain/Auth/usecases/signout_usecase.dart';
-import 'package:localfix/domain/Auth/usecases/signup_usecase.dart';
-import 'package:localfix/presentation/auth/bloc/auth_bloc.dart';
+import 'package:localfix/features/auth/data/datasource/auth_datasource.dart';
+import 'package:localfix/features/auth/data/repositories/auth_repo_implement.dart';
+import 'package:localfix/features/auth/domain/repositories/auth_repositories.dart';
+import 'package:localfix/features/auth/domain/usecases/changepassword_usecase.dart';
+import 'package:localfix/features/auth/domain/usecases/getcurrentuser_usecase.dart';
+import 'package:localfix/features/auth/domain/usecases/isloggedin_usecase.dart';
+import 'package:localfix/features/auth/domain/usecases/login_usecase.dart';
+import 'package:localfix/features/auth/domain/usecases/signout_usecase.dart';
+import 'package:localfix/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:localfix/features/auth/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.asNewInstance();
 
