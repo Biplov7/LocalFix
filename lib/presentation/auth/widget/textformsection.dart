@@ -21,11 +21,11 @@ class Textformsection extends StatefulWidget {
 }
 
 class _TextformsectionState extends State<Textformsection> {
-  bool iconPress = false;
+  bool iconPress = true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: iconPress,
+      obscureText: widget.obscureText && iconPress,
       controller: widget.controller,
       decoration: InputDecoration(
         fillColor: AppColors.darkTextPrimary,

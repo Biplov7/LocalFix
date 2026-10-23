@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
                 backgroundColor: AppColors.success,
               ),
             );
-            context.goNamed(AppName.dashboardName);
+            context.goNamed(AppName.homeName);
           }
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

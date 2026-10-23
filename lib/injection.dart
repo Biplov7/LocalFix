@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:localfix/data/Auth/datasource/auth_datasource.dart';
@@ -14,10 +15,15 @@ import 'package:localfix/presentation/auth/bloc/auth_bloc.dart';
 final sl = GetIt.asNewInstance();
 
 Future<void> init() async {
-  final firebaseAuth = FirebaseAuth.instance;
+  sl.registerLazySingleton(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
-  sl.registerLazySingleton(() => AuthDatasource(firebaseAuth));
-  sl.registerLazySingleton<AuthRepositories>(() => AuthRepoImplement(sl()));
+  sl.registerLazySingleton(
+    () => AuthDatasource(sl<FirebaseAuth>(), sl<FirebaseFirestore>()),
+  );
+  sl.registerLazySingleton<AuthRepositories>(
+    () => AuthRepoImplement(sl(), sl<FirebaseFirestore>()),
+  );
 
   sl.registerLazySingleton(() => ChangepasswordUsecase(sl()));
   sl.registerLazySingleton(() => GetcurrentuserUsecase(sl()));

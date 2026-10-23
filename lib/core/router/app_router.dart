@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localfix/core/router/app_name.dart';
 import 'package:localfix/injection.dart' as di;
+import 'package:localfix/main_screen.dart';
 import 'package:localfix/presentation/auth/bloc/auth_bloc.dart';
 import 'package:localfix/presentation/auth/view/login.dart';
 import 'package:localfix/presentation/auth/view/signup.dart';
-import 'package:localfix/presentation/dashboard/view/dashboard_view.dart';
+import 'package:localfix/presentation/booking/view/booking.dart';
+import 'package:localfix/presentation/home/view/home.dart';
+import 'package:localfix/presentation/notification/view/notification.dart';
+import 'package:localfix/presentation/profile/view/profile.dart';
+import 'package:localfix/presentation/search/view/search.dart';
 import 'package:localfix/presentation/splash/screen/main_boarding.dart';
 import 'package:localfix/presentation/splash/screen/splash.dart';
 
@@ -19,14 +24,17 @@ class AppRouter {
         path: '/splash',
         name: AppName.splashName,
         builder: (context, state) {
-          return Splash();
+          return BlocProvider(
+            create: (context) => di.sl<AuthBloc>(),
+            child: const Splash(),
+          );
         },
       ),
       GoRoute(
         path: '/boarding',
         name: AppName.boardingName,
         builder: (context, state) {
-          return MainBoarding();
+          return const MainBoarding();
         },
       ),
       GoRoute(
@@ -57,15 +65,77 @@ class AppRouter {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => di.sl<AuthBloc>(),
-            child: Signup(),
+            child: const Signup(),
           );
         },
       ),
-      GoRoute(path: '/dashboard',
-      name: AppName.dashboardName,
-      builder: (context, state) {
-        return DashboardView();
-      },)
+
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainScreen(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                name: AppName.homeName,
+                builder: (context, state) {
+                  return const Home();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/search',
+                name: AppName.searchName,
+                builder: (context, state) {
+                  return Search();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/booking',
+                name: AppName.bookingName,
+                builder: (context, state) {
+                  return Booking();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/notification',
+                name: AppName.notificationName,
+                builder: (context, state) {
+                  return Notifications();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                name: AppName.profileName,
+                builder: (context, state) {
+                  return Profile();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     ],
   );
 }

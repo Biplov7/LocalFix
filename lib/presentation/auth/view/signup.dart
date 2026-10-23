@@ -50,7 +50,7 @@ class _SignupState extends State<Signup> {
                 backgroundColor: AppColors.success,
               ),
             );
-            context.goNamed(AppName.dashboardName);
+            context.goNamed(AppName.homeName);
           }
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

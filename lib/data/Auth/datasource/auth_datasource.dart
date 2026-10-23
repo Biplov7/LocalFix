@@ -1,13 +1,23 @@
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localfix/data/Auth/model/login_model.dart';
 import 'package:localfix/data/Auth/model/signup_model.dart';
 import 'package:localfix/data/Auth/model/user_model.dart';
+import 'package:localfix/domain/Auth/entities/account_status.dart';
+import 'package:localfix/domain/Auth/entities/role.dart';
 
 class AuthDatasource {
   final FirebaseAuth auth;
-  AuthDatasource(this.auth);
+  final FirebaseFirestore firestore;
+  AuthDatasource(this.auth, this.firestore);
+
+  CollectionReference<Map<String, dynamic>> get user =>
+      firestore.collection('user');
+
+  DocumentReference<Map<String,dynamic>> userDoc(String uid){
+    return user.doc(uid);
+  }
 
   Future<UserModel> signUp(SignupModel model) async {
     final credentail = await auth.createUserWithEmailAndPassword(
@@ -19,13 +29,17 @@ class AuthDatasource {
     if (user == null) {
       throw StateError("Signup Failed: No user is created");
     }
-
-    return UserModel(
+    final userValue = UserModel(
       id: user.uid,
       name: model.name,
       email: user.email ?? '',
-      phone: model.phone,
+      phoneNumber: model.phone,
+      status: AccountStatus.active,
+      imageUrl: null,
+      role: Role.customer,  
     );
+    await userDoc(user.uid).set(userValue.toMap());
+    return userValue;
   }
 
   Future<UserModel> logIn(LoginModel model) async {
@@ -44,7 +58,10 @@ class AuthDatasource {
       id: user.uid,
       name: user.displayName ?? '',
       email: user.email ?? '',
-      phone: user.phoneNumber ?? '',
+      phoneNumber: user.phoneNumber ?? '',
+      role: Role.customer,
+      imageUrl: null,
+      status: AccountStatus.active,
     );
   }
 
@@ -84,14 +101,11 @@ class AuthDatasource {
   }
 
   //Future change password
-  Future changePassword({
-    required String newPassword
-  }) async{
+  Future changePassword({required String newPassword}) async {
     final user = auth.currentUser;
-    if(user == null){
+    if (user == null) {
       throw StateError("No user is signed in");
     }
     await user.updatePassword(newPassword);
-    
   }
 }

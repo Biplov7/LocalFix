@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:localfix/data/Auth/datasource/auth_datasource.dart';
 import 'package:localfix/data/Auth/model/login_model.dart';
 import 'package:localfix/data/Auth/model/signup_model.dart';
@@ -9,8 +10,11 @@ import 'package:localfix/domain/Auth/repositoires/auth_repositories.dart';
 
 class AuthRepoImplement extends AuthRepositories {
   final AuthDatasource ad;
+  final FirebaseFirestore firestore;
 
-  AuthRepoImplement(this.ad);
+  AuthRepoImplement(this.ad,this.firestore);
+
+  CollectionReference <Map<String,dynamic>> get userCollection => firestore.collection('user');
 
   @override
   Future<UserEntity?> getCurrentUser() async {
@@ -18,12 +22,12 @@ class AuthRepoImplement extends AuthRepositories {
     if (user == null) {
       return null;
     }
-    return UserModel(
-      id: user.uid,
-      name: user.displayName ?? '',
-      email: user.email ?? '',
-      phone: user.phoneNumber ?? '',
-    );
+    final doc = await userCollection.doc(user.uid).get();
+
+    if(!doc.exists || doc.data() == null){
+      return null;
+    }
+    return UserModel.fromMap(doc.data()!);
   }
 
   @override
