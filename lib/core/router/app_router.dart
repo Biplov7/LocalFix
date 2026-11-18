@@ -9,6 +9,7 @@ import 'package:localfix/features/auth/presentation/view/login.dart';
 import 'package:localfix/features/auth/presentation/view/signup.dart';
 import 'package:localfix/features/booking/presentation/view/booking.dart';
 import 'package:localfix/features/home/presentation/view/home.dart';
+import 'package:localfix/features/home/presentation/bloc/home_bloc.dart';
 import 'package:localfix/features/notification/presentation/view/notification.dart';
 import 'package:localfix/features/profile/presentation/view/profile.dart';
 import 'package:localfix/features/search/presentation/view/search.dart';
@@ -81,7 +82,10 @@ class AppRouter {
                 path: '/home',
                 name: AppName.homeName,
                 builder: (context, state) {
-                  return const Home();
+                  return BlocProvider(
+                    create: (context) => di.sl<HomeBloc>(),
+                    child: const HomePage(),
+                  );
                 },
               ),
             ],

@@ -11,6 +11,12 @@ import 'package:localfix/features/auth/domain/usecases/login_usecase.dart';
 import 'package:localfix/features/auth/domain/usecases/signout_usecase.dart';
 import 'package:localfix/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:localfix/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:localfix/features/home/data/datasource/home_datasource.dart';
+import 'package:localfix/features/home/data/repositories/home_repositories.dart';
+import 'package:localfix/features/home/domain/repositories/home_repo.dart';
+import 'package:localfix/features/home/domain/usecases/active_service_category_usecase.dart';
+import 'package:localfix/features/home/domain/usecases/search_category_usecase.dart';
+import 'package:localfix/features/home/presentation/bloc/home_bloc.dart';
 
 final sl = GetIt.asNewInstance();
 
@@ -40,6 +46,24 @@ Future<void> init() async {
       signoutUsecase: sl(),
       signupUsecase: sl(),
       changepasswordUsecase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(
+    () => HomeDatasource(sl<FirebaseFirestore>(), sl<FirebaseAuth>()),
+  );
+  sl.registerLazySingleton<HomeRepo>(
+    () => HomeRepositories(ds: sl<HomeDatasource>()),
+  );
+  sl.registerLazySingleton(() => ActiveServiceCategoryUsecase(sl<HomeRepo>()));
+  sl.registerLazySingleton(() => SearchcategoryUsecase(sl<HomeRepo>()));
+
+  sl.registerFactory(
+    () => HomeBloc(
+      activeServiceCategoryUsecase: sl<ActiveServiceCategoryUsecase>(),
+      searchcategoryUsecase: sl<SearchcategoryUsecase>(),
+      isloggedinUsecase: sl<IsloggedinUsecase>(),
+      getcurrentuserUsecase: sl<GetcurrentuserUsecase>(),
     ),
   );
 }

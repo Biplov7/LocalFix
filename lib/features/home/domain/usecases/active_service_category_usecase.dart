@@ -1,11 +1,11 @@
 import 'package:localfix/features/home/domain/entities/service_category_entity.dart';
-import 'package:localfix/features/home/domain/repositories/home_repositories.dart';
+import 'package:localfix/features/home/domain/repositories/home_repo.dart';
 
 class ActiveServiceCategoryUsecase {
-  final HomeRepositories repo;
-  ActiveServiceCategoryUsecase(this.repo);
+  final HomeRepo _repo;
+  ActiveServiceCategoryUsecase(this._repo);
 
   Future<List<ServiceCategoryEntity>> call(){
-    return repo.getActiveServiceCategories();
+    return _repo.getActiveServiceCategories();
   }
 }

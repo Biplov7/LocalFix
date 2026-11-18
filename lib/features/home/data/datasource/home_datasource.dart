@@ -21,7 +21,7 @@ class HomeDatasource {
     return firestore.collection('service_categories');
   }
 
-  CollectionReference<Map<String,dynamic>> servviceDoc(){
+  CollectionReference<Map<String, dynamic>> servviceDoc() {
     return firestore.collection('services');
   }
 
@@ -36,10 +36,10 @@ class HomeDatasource {
     return result.docs.map((result) {
       final service = ServiceCategoryModel.fromMap(result.data());
       return SearchResultModel.fromCategory(service);
-    },).toList();
+    }).toList();
   }
 
-    Future<List<SearchResultModel>> searchCategory(String query) async {
+  Future<List<SearchResultModel>> searchCategory(String query) async {
     final result = await serviceCategoryDoc()
         .where('isActive', isEqualTo: true)
         .orderBy('name')
@@ -51,13 +51,13 @@ class HomeDatasource {
       final category = ServiceCategoryModel.fromMap(result.data());
 
       return SearchResultModel.fromCategory(category);
-    },).toList();
+    }).toList();
   }
 
-  Future<List<SearchResultModel>> allSearch(String query) async{
+  Future<List<SearchResultModel>> allSearch(String query) async {
     final searchResult = query.trim().toLowerCase();
 
-    if(searchResult.isEmpty){
+    if (searchResult.isEmpty) {
       return [];
     }
 
@@ -118,13 +118,26 @@ class HomeDatasource {
   }
 
   Future<List<ServiceCategoryModel>> getActiveServiceCategories() async {
-    final snapshot = await serviceCategoryDoc()
+    var snapshot = await serviceCategoryDoc()
         .where('isActive', isEqualTo: true)
         .orderBy('sortOrder')
         .get();
 
+    if (snapshot.docs.isEmpty) {
+      await setDefaultServiceCategories();
+
+      snapshot = await serviceCategoryDoc()
+          .where('isActive', isEqualTo: true)
+          .orderBy('sortOrder')
+          .get();
+    }
+
     return snapshot.docs.map((category) {
-      return ServiceCategoryModel.fromMap(category.data());
+      final data = category.data();
+      return ServiceCategoryModel.fromMap({
+        ...data,
+        'categoryId': data['categoryId'] ?? category.id,
+      });
     }).toList();
   }
 }
