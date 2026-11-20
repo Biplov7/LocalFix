@@ -1,4 +1,4 @@
-import 'package:localfix/features/home/domain/entities/location_entity.dart';
+import 'package:localfix/features/location/domain/location_entity.dart';
 
 class ProviderEntity {
   final String providerUid;

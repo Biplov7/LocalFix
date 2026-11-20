@@ -6,6 +6,7 @@ class ProviderServiceEntity {
   final String? customTitle;
   final String description;
   final double price;
+  final String? imageUrl;
   final int estimatedDurationMinutes;
   final bool isActive;
 
@@ -17,6 +18,7 @@ class ProviderServiceEntity {
     this.customTitle,
     required this.description,
     required this.price,
+    required this.imageUrl,
     required this.estimatedDurationMinutes,
     required this.isActive,
   });
